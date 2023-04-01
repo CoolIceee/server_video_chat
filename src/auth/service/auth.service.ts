@@ -3,10 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Auth, AuthDocument } from '../schemas/auth.schema';
 import { Model } from 'mongoose';
 import { CreateAuthDto } from '../dto/create-auth.dto';
-
+import { CreateUserDto } from '../dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import * as uuid from 'uuid';
-import MailService from './mail.service';
+import mailService from './mail.service';
 import { TokenService } from './token.service';
 
 @Injectable()
@@ -27,8 +27,12 @@ export class AuthService {
       password: hashPassword,
       activetedLink,
     });
-    await MailService.sendActivatioMail(email, activetedLink);
-    const tokens = this.tokenService.generateTokens()
-    return activetedLink;
+    await mailService.sendActivatioMail(email, activetedLink);
+    const userDto = new CreateUserDto(user);
+
+    const tokens = this.tokenService.generateTokens({ ...userDto });
+
+    await this.tokenService.saveToken(userDto.id, tokens.refreshToken);
+    return { ...tokens, user: userDto };
   }
 }

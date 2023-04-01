@@ -3,18 +3,16 @@ import * as jwt from 'jsonwebtoken';
 import { Token, TokenDocument } from '../schemas/token.schema';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class TokenService {
   constructor(
     @InjectModel(Token.name) private tokentModel: Model<TokenDocument>,
+    private jwtService: JwtService,
   ) {}
   generateTokens(payload) {
-    const accessToken = jwt.sing(payload, process.env.JWT_ACCESS_SECRET, {
-      expiresIn: '30m',
-    });
-    const refreshToken = jwt.sing(payload, process.env.JWT_REFRESH_SECRET, {
-      expiresIn: '30d',
-    });
+    const accessToken = this.jwtService.signAsync(payload);
+    const refreshToken = this.jwtService.signAsync(payload);
     return {
       accessToken,
       refreshToken,

@@ -1,10 +1,8 @@
-export class CreateAuthDto {
+export class CreateUserDto {
   readonly id: string;
-  readonly name: string;
   readonly email: string;
   readonly password: string;
   readonly isActiveted: boolean;
-  readonly activetedLink: string;
   constructor(model) {
     this.id = model._id;
     this.email = model.email;
