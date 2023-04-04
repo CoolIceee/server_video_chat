@@ -28,11 +28,14 @@ export class AuthService {
       activetedLink,
     });
     await mailService.sendActivatioMail(email, activetedLink);
-    const userDto = new CreateUserDto(user);
-
-    const tokens = this.tokenService.generateTokens({ ...userDto });
-
-    await this.tokenService.saveToken(userDto.id, tokens.refreshToken);
-    return { ...tokens, user: userDto };
+    // const userDto = new CreateAuthDto(user);
+    const payload = {
+      id: user.id,
+      name: user.name,
+      refreshToken: user.activetedLink,
+    };
+    const tokens = this.tokenService.generateTokens(payload);
+    await this.tokenService.saveToken(user.id, tokens.refreshToken);
+    return { ...tokens, user: user };
   }
 }

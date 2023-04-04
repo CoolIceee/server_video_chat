@@ -5,9 +5,4 @@ export class CreateAuthDto {
   readonly password: string;
   readonly isActiveted: boolean;
   readonly activetedLink: string;
-  constructor(model) {
-    this.id = model._id;
-    this.email = model.email;
-    this.isActiveted = model.isActiveted;
-  }
 }

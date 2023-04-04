@@ -10,8 +10,6 @@ export class AuthController {
     @Res({ passthrough: true }) res,
     @Body() CreateAuthDto: CreateAuthDto,
   ) {
-    const email = CreateAuthDto.email;
-    const password = CreateAuthDto.password;
     const userData = await this.AuthService.registerUser(CreateAuthDto);
     res.cookie('refreshToken', userData.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
