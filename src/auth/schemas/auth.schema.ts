@@ -5,9 +5,9 @@ export type AuthDocument = Auth & Document;
 export class Auth {
   @Prop()
   name: string;
-  @Prop({ unique: true, required: true })
+  @Prop({ unique: true })
   email: string;
-  @Prop({ required: true })
+  @Prop()
   password: string;
   @Prop({ default: false })
   isActiveted: boolean;

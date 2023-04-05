@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Auth, AuthDocument } from '../schemas/auth.schema';
 import { Model } from 'mongoose';
 import { CreateAuthDto } from '../dto/create-auth.dto';
-import { CreateUserDto } from '../dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import * as uuid from 'uuid';
 import mailService from './mail.service';
@@ -27,7 +26,10 @@ export class AuthService {
       password: hashPassword,
       activetedLink,
     });
-    await mailService.sendActivatioMail(email, activetedLink);
+    await mailService.sendConfirmMail(
+      email,
+      `${process.env.API_URL}api/activate/${activetedLink}`,
+    );
     // const userDto = new CreateAuthDto(user);
     const payload = {
       id: user.id,
