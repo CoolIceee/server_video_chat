@@ -5,9 +5,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Auth, AuthSchema } from './schemas/auth.schema';
 import { TokenService } from './service/token.service';
 import { Token, TokenSchema } from './schemas/token.schema';
+import { MailService } from './service/mail.service';
 
 @Module({
-  providers: [AuthService, TokenService],
+  providers: [AuthService, TokenService, MailService],
   controllers: [AuthController],
   imports: [
     MongooseModule.forFeature([{ name: Auth.name, schema: AuthSchema }]),

@@ -2,25 +2,17 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 @Injectable()
-class MailService {
-  constructor(
-    // помимо всего прочего подключение сервиса отправки
-    private readonly mailerService?: MailerService,
-  ) {}
-  async sendConfirmMail(to, link) {
-    // const urlConfirmAddress = this.configService.get<string>(
-    //   'URL_CONFIRM_ADDRESS',
-    // );
-    // Отправка почты
+export class MailService {
+  constructor(private readonly mailerService: MailerService) {}
+
+  async sendConfirmMail() {
     return await this.mailerService
       .sendMail({
-        to,
+        to: 'magahak1414@gmail.com',
+        from: 'fayamiyagi1@gmail.com',
         subject: 'Подтверждение регистрации',
-        // template: join(__dirname, '/../templates', 'confirmReg'),
-        context: {
-          id: to,
-          username: to,
-        },
+        text: 'dadadadd',
+        html: `<div>aadad</div>`,
       })
       .catch((e) => {
         throw new HttpException(
@@ -63,4 +55,3 @@ class MailService {
 //     });
 //   }
 // }
-export default new MailService();

@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { CreateAuthDto } from '../dto/create-auth.dto';
 import * as bcrypt from 'bcrypt';
 import * as uuid from 'uuid';
-import mailService from './mail.service';
+import { MailService } from './mail.service';
 import { TokenService } from './token.service';
 
 @Injectable()
@@ -13,6 +13,7 @@ export class AuthService {
   constructor(
     @InjectModel(Auth.name) private authtModel: Model<AuthDocument>,
     private readonly tokenService: TokenService,
+    private readonly mailService: MailService,
   ) {}
 
   async registerUser(CreateAuthDto: CreateAuthDto) {
@@ -26,10 +27,7 @@ export class AuthService {
       password: hashPassword,
       activetedLink,
     });
-    await mailService.sendConfirmMail(
-      email,
-      `${process.env.API_URL}api/activate/${activetedLink}`,
-    );
+    await this.mailService.sendConfirmMail();
     // const userDto = new CreateAuthDto(user);
     const payload = {
       id: user.id,
