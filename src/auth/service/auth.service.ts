@@ -21,13 +21,14 @@ export class AuthService {
     const password = CreateAuthDto.password;
     const activetedLink = uuid.v4();
     const candidate = await this.authtModel.findOne({ email });
+
     const hashPassword = await bcrypt.hash(password, 3);
     const user = await this.authtModel.create({
       email,
       password: hashPassword,
       activetedLink,
     });
-    await this.mailService.sendConfirmMail();
+    await this.mailService.sendConfirmMail(email, activetedLink);
     // const userDto = new CreateAuthDto(user);
     const payload = {
       id: user.id,

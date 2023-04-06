@@ -5,13 +5,11 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 export class MailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendConfirmMail() {
+  async sendConfirmMail(to, link) {
     return await this.mailerService
       .sendMail({
-        to: 'magahak1414@gmail.com',
-        from: 'fayamiyagi1@gmail.com',
+        to,
         subject: 'Подтверждение регистрации',
-        text: 'dadadadd',
         html: `<div>aadad</div>`,
       })
       .catch((e) => {
@@ -21,37 +19,4 @@ export class MailService {
         );
       });
   }
-  ///
 }
-
-// import * as nodemailer from 'nodemailer';
-
-// class MailService {
-//   transporter: any;
-//   constructor() {
-//     this.transporter = nodemailer.createTransport({
-//       service: 'gamail',
-//       host: process.env.SMTP_HOST,
-//       port: process.env.SMTP_PORT,
-//       secure: true,
-//       auth: {
-//         user: process.env.SMTP_USER,
-//         pass: `${process.env.SMTP_PASSWORD}`,
-//       },
-//     });
-//   }
-//   async sendActivatioMail(to, link) {
-//     this.transporter.sendMail({
-//       from: process.env.SMTP_USER,
-//       to,
-//       text: '',
-//       html: `
-//     <div>
-//     <div>
-//     <a href="${link}">${link}</a>
-//     </div>
-//     </div>
-//     `,
-//     });
-//   }
-// }
