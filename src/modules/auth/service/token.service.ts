@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import { Token, TokenDocument } from '../schemas/token.schema';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from '../dto/create-auth.dto';
+
 @Injectable()
 export class TokenService {
   constructor(
@@ -28,10 +28,15 @@ export class TokenService {
       tokenData.refreshToken = refreshToken;
       return tokenData.save();
     }
+    console.log(userId);
     const token = await this.tokentModel.create({
       user: userId,
       refreshToken,
     });
     return token;
+  }
+  async removeToken(refreshToken) {
+    const tokenData = await this.tokentModel.deleteOne({ refreshToken });
+    return tokenData;
   }
 }
